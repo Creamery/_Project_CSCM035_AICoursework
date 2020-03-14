@@ -1,11 +1,13 @@
+
 # load json and create model
 from __future__ import division
-from keras.models import Sequential
-from keras.layers import Dense
+
 from keras.models import model_from_json
-import numpy
-import os
 import numpy as np
+import sklearn
+from sklearn.metrics import average_precision_score
+
+import ExportCsv
 
 
 def start():
@@ -25,23 +27,63 @@ def start():
     x = np.load('./modXtest.npy')
     y = np.load('./modytest.npy')
 
-    yhat= loaded_model.predict(x)
+    yhat = loaded_model.predict(x)
     yh = yhat.tolist()
     yt = y.tolist()
     count = 0
-
     for i in range(len(y)):
         yy = max(yh[i])
         yyt = max(yt[i])
         predy.append(yh[i].index(yy))
         truey.append(yt[i].index(yyt))
+
         if(yh[i].index(yy) == yt[i].index(yyt)):
             count += 1
 
-    acc = (count/len(y))*100
+    total = len(y)
+    acc = (count/total) * 100
+    results = sklearn.metrics.precision_recall_fscore_support(truey, predy)
+    # prec = average_precision_score(truey, predy)
 
     # save values for confusion matrix
     np.save('truey', truey)
     np.save('predy', predy)
     print("Predicted and true label values saved")
+    print("Correct : " + str(count))
+    print("Total : " + str(total))
     print("Accuracy on test set :" + str(acc) + "%")
+
+    labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
+    print("")
+    print("--------------------------------")
+    print("Precision and Recall per Emotion")
+    print("--------------------------------")
+
+    len_labels = len(labels)
+    precision_row = []
+    recall_row = []
+    fscore_row = []
+
+
+    for i in range(len_labels):
+        print(labels[i])
+
+        precision = results[0][i]
+        round_precision = round(precision * 100, 3)
+        precision_row.append(round_precision)
+
+        recall = results[1][i]
+        round_recall = round(recall * 100, 3)
+        recall_row.append(round_recall)
+
+        fscore = 2 * ((precision * recall)/(precision + recall))
+        round_fscore = round(fscore * 100, 3)
+        fscore_row.append(round_fscore)
+
+        print("Precision : " + str(round_precision) + " %")
+        print("Recall : " + str(round_recall) + " %")
+        print("F-score : " + str(round_fscore) + " %")
+        print("")
+
+    result_table = np.vstack([labels, precision_row, recall_row, fscore_row])
+    ExportCsv.save(result_table)
