@@ -8,7 +8,7 @@ import sklearn
 from sklearn.metrics import average_precision_score
 
 import ExportCsv
-
+import Constants
 
 def start():
 
@@ -53,7 +53,7 @@ def start():
     print("Total : " + str(total))
     print("Accuracy on test set :" + str(acc) + "%")
 
-    labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
+    labels = Constants._LABELS
     print("")
     print("--------------------------------")
     print("Precision and Recall per Emotion")

@@ -13,11 +13,11 @@ if __name__ == '__main__':
 
     # [2]
     # uncomment the line below to show the resulting accuracy
-    ResultHandler.start()
+    # ResultHandler.start()
 
     # [3]
     # uncomment the line below to start testing your own images
-    # ImageTest.start()
+    ImageTest.start()
 
     #[4]
     # graph the resulting model

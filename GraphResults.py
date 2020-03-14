@@ -1,5 +1,7 @@
 
 import itertools
+from itertools import count
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -17,12 +19,19 @@ def create_metric_graph():
     df_metric = pd.read_csv(Constants._RESULTS_FILENAME)
 
     print(df_metric)
-    df_metric.plot.bar(rot = 0)
-
-    plt.show()
 
     # plotting the bars
-    colors = ['#EE3224', '#EE3224', 'F78F1E']
+    colors = ['#f224aa', '#a52af7', '#24f2ef']
+    bar_width = 0.8
+
+    metric_plot = df_metric.plot.bar(rot = 0, width = bar_width, color = colors, alpha = 0.9)
+    metric_plot.legend(loc = 'best')
+    metric_plot.set_title('Model Performance')
+    metric_plot.set_ylabel('Performance')
+    metric_plot.set_xticklabels(Constants._LABELS)
+    metric_plot.grid(linestyle = '-', linewidth = 0.4, axis = 'y')
+
+    plt.show()
 
 
 def create_confusion_matrix():
