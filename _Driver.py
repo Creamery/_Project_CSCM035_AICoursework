@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     #[4]
     # graph the resulting model
-    # GraphResults.start()
+    GraphResults.start()
 
 
 

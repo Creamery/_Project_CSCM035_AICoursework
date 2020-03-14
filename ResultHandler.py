@@ -59,6 +59,9 @@ def start():
     print("Precision and Recall per Emotion")
     print("--------------------------------")
 
+    header = labels.copy()
+    header.insert(0, "Metric")
+
     len_labels = len(labels)
     precision_row = []
     recall_row = []
@@ -85,5 +88,10 @@ def start():
         print("F-score : " + str(round_fscore) + " %")
         print("")
 
-    result_table = np.vstack([labels, precision_row, recall_row, fscore_row])
+    precision_row.insert(0, "Precision")
+    recall_row.insert(0, "Recall")
+    fscore_row.insert(0, "F-Score")
+
+    result_table = np.vstack([header, precision_row, recall_row, fscore_row])
+    result_table = result_table.transpose()
     ExportCsv.save(result_table)

@@ -1,12 +1,31 @@
 
 import itertools
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 
+import Constants
+
 
 def start():
+    create_metric_graph()
+    create_confusion_matrix()
 
+
+def create_metric_graph():
+    df_metric = pd.read_csv(Constants._RESULTS_FILENAME)
+
+    print(df_metric)
+    df_metric.plot.bar(rot = 0)
+
+    plt.show()
+
+    # plotting the bars
+    colors = ['#EE3224', '#EE3224', 'F78F1E']
+
+
+def create_confusion_matrix():
     y_true = np.load('./truey.npy')
     y_pred = np.load('./predy.npy')
 
